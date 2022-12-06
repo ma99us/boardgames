@@ -62,18 +62,18 @@ public class ExtractGamesApp {
     }
 
     private boolean filterGame(GameDetails game) {
-        if (game.getAvgRating() == null || game.getAvgRating() < MIN_RATING) {
+        if (MIN_RATING != null && (game.getAvgRating() == null || game.getAvgRating() < MIN_RATING)) {
             return false;
         }
-        if (game.getAvgWeight() == null || game.getAvgWeight() < MIN_WEIGHT) {
+        if (MIN_WEIGHT != null && (game.getAvgWeight() == null || game.getAvgWeight() < MIN_WEIGHT)) {
             return false;
         }
-        boolean isBest = safeIntegerListContains(PLAYERS_NUM, game.getBestPlayers());
-        boolean isGood = isBest || safeIntegerListContains(PLAYERS_NUM, game.getBestPlayers());
-        if (BEST_PLAYERS && isBest || GOOD_PLAYERS && isGood) {
-            return true;
+        boolean isBest = BEST_PLAYERS && safeIntegerListContains(PLAYERS_NUM, game.getBestPlayers());
+        boolean isGood = GOOD_PLAYERS && (isBest || safeIntegerListContains(PLAYERS_NUM, game.getGoodPlayers()));
+        if (PLAYERS_NUM != null && !isBest && !isGood) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     public static void main(String[] args) {
