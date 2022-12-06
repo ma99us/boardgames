@@ -18,7 +18,7 @@ import static org.maggus.BggConfig.BGG_USER_NAME;
 import static org.maggus.ParsingUtils.*;
 
 @Slf4j
-public class DumpAllGamesApp {
+public class DumpBasicGamesApp {
 
     public final String BGG_ALL_GAMES_URL = "https://boardgamegeek.com/browse/boardgame/page/";     // append X - page number
     public static final String OUT_FILE_NAME = "ranked-bgg-games.json";
@@ -132,7 +132,7 @@ public class DumpAllGamesApp {
 
     public static void main(String[] args) {
         try {
-            DumpAllGamesApp app = new DumpAllGamesApp();
+            DumpBasicGamesApp app = new DumpBasicGamesApp();
             app.loadAllGames();
 //            app.allGames.addAll(app.loadGamesPage(30));   // TEST
 

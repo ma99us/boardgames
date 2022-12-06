@@ -37,4 +37,11 @@ public class ParsingUtils {
     public static boolean containsLongArray(Long val, long[] arr) {
         return Arrays.stream(arr).anyMatch(id -> val != null && val == id);
     }
+
+    public static boolean safeIntegerListContains(Integer val, List<Integer> list) {
+        if (list == null || val == null) {
+            return false;
+        }
+        return list.contains(val);
+    }
 }

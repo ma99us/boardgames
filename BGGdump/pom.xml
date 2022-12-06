@@ -5,6 +5,7 @@
     <artifactId>bgg-dump</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>BGGdump</name>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -22,7 +23,7 @@
 <!--                    <archive>-->
 <!--                        <manifest>-->
 <!--                            <mainClass>-->
-<!--                                org.maggus.DumpAllGamesApp-->
+<!--                                org.maggus.DumpBasicGamesApp-->
 <!--                            </mainClass>-->
 <!--                        </manifest>-->
 <!--                    </archive>-->
