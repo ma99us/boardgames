@@ -35,6 +35,7 @@ type Game {
 # clients can execute, along with the return type for each. In this
 # case, the "games" query returns an array of zero or more Games (defined above).
 type Query {
+    hello: String,
     game (id: Int!): Game,
     games (minR: Float, minW: Float, sortBy: String, limit: Int, offset: Int): [Game]
 }
@@ -44,6 +45,7 @@ type Query {
 // This resolver retrieves games from the "games" array above.
 const resolvers = {
     Query: {
+        hello: () => 'BGG Snapshot',
         game(parent, args, contextValue, info) {
             return games.find(game => game.bggId === args.id)
         },
@@ -94,16 +96,16 @@ const server = new ApolloServer({
     resolvers,
 });
 
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
+///// Passing an ApolloServer instance to the `startStandaloneServer` function:
+/////  1. creates an Express app
+/////  2. installs your ApolloServer instance as middleware
+/////  3. prepares your app to handle incoming requests
+//TODO: Uncomment bellow for a local test
+// const {url} = await startStandaloneServer(server, {
+//     listen: {port: 4000},
+// });
+// console.log(`🚀  Server ready at: ${url}`);
 
-const {url} = await startStandaloneServer(server, {
-    listen: {port: 4000},
-});
-console.log(`🚀  Server ready at: ${url}`);
-
-//TODO: For future AWS Lambda deployment
-// export default startServerAndCreateLambdaHandler(server);
+//TODO: Uncomment bellow for the AWS Lambda deployment with Serverless
+export const graphqlHandler = startServerAndCreateLambdaHandler(server);
 

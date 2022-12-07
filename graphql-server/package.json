@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "compile": "tsc",
-    "start": "npm run compile && node ./dist/index.js"
+    "start": "npm run compile && node ./dist/index.js",
+    "lambda:test": "serverless invoke local -f graphql -p query.json"
   },
   "dependencies": {
     "@apollo/server": "^4.2.2",
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.11",
+    "serverless-plugin-typescript": "^2.1.4",
     "typescript": "^4.9.3"
   }
 }

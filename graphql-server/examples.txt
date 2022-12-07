@@ -1,0 +1,44 @@
+query SingleGameQuery {
+  game(id: 174430) {
+    bggId
+    name
+    avgRating,
+    avgWeight
+  }
+}
+
+query PaginationGamesQuery {
+  games(sortBy: "r", limit: 100, offset: 300) {
+    bggId
+    name
+    avgRating,
+    avgWeight
+  }
+}
+
+query PopularSortedGamesQuery {
+  games(sortBy: "r", minR: 9) {
+    bggId
+    name
+    avgRating,
+    avgWeight
+  }
+}
+
+query HeavySortedGamesQuery {
+  games(sortBy: "w", minW: 4) {
+    bggId
+    name
+    avgRating,
+    avgWeight
+  }
+}
+
+query PopularHeavySortedByNameGamesQuery {
+  games(sortBy: "n", minW: 4, minR: 8) {
+    bggId
+    name
+    avgRating,
+    avgWeight
+  }
+}
