@@ -1,22 +1,28 @@
 <template>
-  <li class="row game h-100" v-if="game">
+  <li class="row game" v-if="game">
     <div class="col-2 tb-wrapper my-auto">
-      <img class="tb" :src="game.thumbnailUrl" alt="game logo"/>
+      <img class="tb" :src="game.thumbnailUrl" alt="game logo" @click="showModal" />
     </div>
-    <h3 class="col-6 my-auto">{{game.name}}</h3>
-    <p class="col-2 my-auto">R: {{game.avgRating?.toFixed(1)}}</p>
-    <p class="col-2 my-auto">W: {{game.avgWeight?.toFixed(1)}}</p>
+    <h3 class="col-8 my-auto">{{ game.name }}</h3>
+    <p class="col-1 my-auto">{{ game.avgRating?.toFixed(1) }}</p>
+    <p class="col-1 my-auto">{{ game.avgWeight?.toFixed(1) }}</p>
   </li>
 </template>
 
 <script lang="ts">
-import type {Game} from "@/stores/game";
+import type { Game } from "@/stores/game";
 
 export default {
+  name: "GameItem",
   props: {
-    game: {} as typeof Game
+    game: {} as Game
+  },
+  methods: {
+    showModal() {
+      this.$emit("click", this.game);
+    },
   }
-}
+};
 </script>
 
 <style scoped>
@@ -25,13 +31,14 @@ export default {
   background-color: #f2f2f2;
 }
 
-.tb-wrapper{
+.tb-wrapper {
   text-align: center;
-  width: 150px;
+  max-width: 150px;
 }
 
-.tb{
+.tb {
   max-height: 60px;
+  cursor: pointer;
 }
 
 h3 {
