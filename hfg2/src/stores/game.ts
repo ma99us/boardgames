@@ -16,3 +16,9 @@ export interface Game {
   avgRating?: number;
   avgWeight?: number;
 }
+
+export interface HfgGame {
+  id?: number;
+  title?: string;
+  bggId?: number;
+}

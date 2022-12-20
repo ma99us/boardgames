@@ -1,19 +1,20 @@
 <template>
+  <h5 v-if="error" class="text-bg-danger text-center">{{ error }}</h5>
   <div class="games">
-    <GamePopup :game="selectedGame" />
+    <GamePopup :game="selectedGame"/>
     <div>
-      <PageComp />
+      <PageComp v-if="games.length"/>
       <ul class="list-group" ref="scrollComponent">
         <GameItem
-          v-for="game in games"
-          :key="game.bggId"
-          :game="game"
-          @click="onGameClicked(game)"
+            v-for="game in games"
+            :key="game.bggId"
+            :game="game"
+            @click="onGameClicked(game)"
         />
       </ul>
     </div>
   </div>
-  <LoadingComp v-if="isLoading || isDone" :isDone="isDone" />
+  <LoadingComp v-if="isLoading || isDone" :isDone="isDone"/>
 </template>
 
 <script lang="ts">
@@ -27,12 +28,13 @@ import type {Game} from "@/stores/game";
 
 export default {
   name: "GameView",
+  inheritAttrs: false,
   data() {
     return {
       isLoading: false,
       modalShow: false,
       showPopup: false,
-      selectedGame: undefined
+      selectedGame: {} as Game | undefined
     };
   },
   components: {
@@ -43,15 +45,15 @@ export default {
   },
   computed: {
     ...mapStores(useGamesStore),
-    ...mapState(useGamesStore, ["games", "isDone"]),
+    ...mapState(useGamesStore, ["games", "isDone", "error"]),
   },
   methods: {
     handleScroll() {
       const element = this.$refs.scrollComponent as HTMLElement;
       if (
-        element.getBoundingClientRect().bottom < window.innerHeight &&
-        !this.isLoading &&
-        !this.isDone
+          element.getBoundingClientRect().bottom < window.innerHeight &&
+          !this.isLoading &&
+          !this.isDone
       ) {
         this.isLoading = true;
         this.gamesStore.fetchMoreGames().finally(() => {
@@ -67,9 +69,9 @@ export default {
     window.addEventListener("scroll", this.handleScroll);
 
     this.isLoading = true;
-    this.gamesStore.fetchGames().finally(() => {
-      this.isLoading = false;
-    });
+    this.gamesStore.loadHfgGames()
+        .then(() => this.gamesStore.fetchGames())
+        .finally(() => this.isLoading = false);
   },
   unmounted() {
     window.removeEventListener("scroll", this.handleScroll);

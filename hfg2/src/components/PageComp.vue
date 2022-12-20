@@ -1,7 +1,7 @@
 <template>
   <div class="row page-comp">
     <div class="col-2 tb"></div>
-    <div class="col-8 title">
+    <div class="col-7 title">
       <a href="#" @click="onSortByClick('n')"><h5>Title</h5></a
       ><span v-if="sortBy === 'n'"> *</span>
     </div>
@@ -12,6 +12,10 @@
     <div class="col-1">
       <a href="#" @click="onSortByClick('w')"><h5>Weight</h5></a
       ><span v-if="sortBy === 'w'"> *</span>
+    </div>
+    <div class="col-1">
+      <input type="checkbox" id="hfgOwned" name="hfgOwned" :value="hfgOwned" v-model="hfgOwned"  @change="onHfgOwnedChange">
+      <a href="#"><label for="hfgOwned"><h5>HFG Owned</h5></label></a>
     </div>
   </div>
 </template>
@@ -24,12 +28,16 @@ export default {
   name: "PageComp",
   computed: {
     ...mapStores(useGamesStore),
-    ...mapState(useGamesStore, ["sortBy"]),
+    ...mapState(useGamesStore, ["sortBy", "hfgOwned"]),
   },
   methods: {
     onSortByClick(sortBy: string) {
       this.gamesStore.fetchGames({ sortBy });
     },
+    onHfgOwnedChange() {
+      this.gamesStore.hfgOwned = !this.hfgOwned;
+      this.gamesStore.fetchGames();
+    }
   },
 };
 </script>

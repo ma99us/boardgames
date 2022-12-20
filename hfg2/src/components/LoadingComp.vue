@@ -1,15 +1,21 @@
 <template>
   <footer class="row loading-comp">
     <h5 v-if="!isDone">Loading...</h5>
-    <h5 v-if="isDone">Done. <a href="#" @click="scrollToTop"> - To top</a></h5>
+    <h5 v-if="isDone">Done. ({{games.length}} games) <a href="#" @click="scrollToTop"> - To top</a></h5>
   </footer>
 </template>
 
 <script lang="ts">
+import {mapState} from "pinia";
+import {useGamesStore} from "@/stores/games";
+
 export default {
   name: "LoadingComp",
   props: {
     isDone: Boolean,
+  },
+  computed: {
+    ...mapState(useGamesStore, ['games'])
   },
   methods: {
     scrollToTop() {

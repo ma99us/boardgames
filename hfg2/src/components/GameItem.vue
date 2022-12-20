@@ -1,21 +1,45 @@
 <template>
   <li class="row game" v-if="game">
     <div class="col-2 tb-wrapper my-auto">
-      <img class="tb" :src="game.thumbnailUrl" alt="game logo" @click="showModal" />
+      <img class="tb" :src="game.thumbnailUrl" alt="game logo" @click="showModal"/>
     </div>
-    <h3 class="col-8 my-auto">{{ game.name }}</h3>
+    <h3 class="col-7 my-auto">{{ game.name }}</h3>
     <p class="col-1 my-auto">{{ game.avgRating?.toFixed(1) }}</p>
     <p class="col-1 my-auto">{{ game.avgWeight?.toFixed(1) }}</p>
+    <a v-if="getHfgGame" target="_blank" :href="hfgGameDetailsUrl" class="col-1 my-auto">HFG</a>
   </li>
 </template>
 
 <script lang="ts">
-import type { Game } from "@/stores/game";
+import type {Game, HfgGame} from "@/stores/game";
+import type {PropType} from "vue";
+import {mapState, mapStores} from "pinia";
+import {useGamesStore} from "@/stores/games";
+import {HFG_GAME_DETAIL_URL} from "@/stores/api";
 
 export default {
   name: "GameItem",
   props: {
-    game: {} as Game
+    game: {
+      type: Object as PropType<Game>,
+      required: true,
+      validator: (game: Game) => !!game.bggId
+    }
+  },
+  computed: {
+    ...mapState(useGamesStore, ['hfgGames']),
+    getHfgGame(): HfgGame | undefined {
+      return this.hfgGames.get(this.game.bggId!);
+    },
+    hfgGameDetailsUrl() {
+      const hfgGame = this.getHfgGame;
+      return hfgGame ? HFG_GAME_DETAIL_URL + hfgGame.id! : undefined;
+    }
+  },
+  emits: {
+    click(game: Game) {
+      return !!game.bggId;
+    }
   },
   methods: {
     showModal() {

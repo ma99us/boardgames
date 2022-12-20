@@ -68,11 +68,16 @@
 import type {Game} from "@/stores/game";
 import {mapStores} from "pinia";
 import {useGamesStore} from "@/stores/games";
+import type {PropType} from "vue";
 
 export default {
   name: "GamePopup",
   props: {
-    game: {} as Game
+    game: {
+      type: Object as PropType<Game> | undefined,
+      required: false,
+      validator: (game: Game | undefined) => (!game || !!game.bggId)
+    }
   },
   data() {
     return {
@@ -91,7 +96,7 @@ export default {
         return this.details;
       }
 
-      const game = await this.gamesStore.loadGameDetails(this.game.bggId);
+      const game = await this.gamesStore.loadGameDetails(this.game.bggId!);
 
       this.details = game ? {...game} : {};
       return this.details;
@@ -107,7 +112,7 @@ export default {
       this.loadDetails()
           .finally(() => {
             this.loading = false;
-          })
+          });
     }
   }
 };
